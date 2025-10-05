@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html lang="az" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elan Portalı</title>
+    <style>
+        /* CSS Variables for Theme */
+        :root {
+            --primary-color: #2ECC71;
+            --primary-dark: #27AE60;
+            --text-color: #333;
+            --text-light: #666;
+            --bg-color: #fff;
+            --border-color: #e0e0e0;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
+        /* Dark Mode Variables */
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #fff;
+            --text-light: #ccc;
+            --border-color: #444;
+            --shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--bg-color);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .search-bar {
+            flex: 0 1 400px;
+            display: flex;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px 0 0 4px;
+            outline: none;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .search-btn {
+            padding: 0.5rem 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .login-btn, .add-listing-btn {
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .login-btn {
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .add-listing-btn {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .add-listing-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            padding: 0.5rem;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--text-color);
+            margin: 3px 0;
+            transition: var(--transition);
+        }
+
+        /* Main Content */
+        .main-content {
+            min-height: calc(100vh - 200px);
+            padding: 2rem 0;
+        }
+
+        /* Categories Grid */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .category-card {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary-color);
+        }
+
+        .category-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        /* Listings Grid */
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .listing-card {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .listing-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .listing-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+        }
+
+        .listing-info {
+            padding: 1rem;
+        }
+
+        .listing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .listing-price {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .favorite-btn {
+            background: none;
+            border: none;
+            color: #ccc;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.2rem;
+            padding: 0.25rem;
+        }
+
+        .favorite-btn:hover, .favorite-btn.active {
+            color: #e74c3c;
+            transform: scale(1.1);
+        }
+
+        .listing-title {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .listing-location {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Filter Panel */
+        .filter-panel {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-group h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .filter-options label {
+            display: block;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+
+        .price-slider {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .price-output {
+            text-align: center;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+        }
+
+        .pagination button {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .pagination button.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pagination button:hover:not(.active) {
+            background: var(--border-color);
+        }
+
+        /* Slider */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 400px;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 1.2rem;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            padding: 1rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .slider-btn:hover {
+            background: rgba(0,0,0,0.7);
+        }
+
+        .prev-btn {
+            left: 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .next-btn {
+            right: 0;
+            border-radius: 4px 0 0 4px;
+        }
+
+        /* Form Styles */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+        }
+
+        .tab.active {
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Chat Layout */
+        .chat-container {
+            display: flex;
+            height: 600px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .chat-list {
+            width: 300px;
+            border-right: 1px solid var(--border-color);
+            background: var(--bg-color);
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chat-item:hover, .chat-item.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .chat-window {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-color);
+        }
+
+        .chat-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            max-width: 70%;
+        }
+
+        .message.sent {
+            background: var(--primary-color);
+            color: white;
+            margin-left: auto;
+        }
+
+        .message.received {
+            background: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-color);
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-right: 0.5rem;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* Image Upload Preview */
+        .image-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .image-upload:hover {
+            border-color: var(--primary-color);
+        }
+
+        .image-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .preview-image {
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .preview-image img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+        }
+
+        .footer-section a {
+            color: #bdc3c7;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-color);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+            
+            .search-bar {
+                order: 3;
+                flex: 1 1 100%;
+                margin-top: 1rem;
+            }
+            
+            .mobile-menu-toggle {
+                display: flex;
+            }
+            
+            .header-actions {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--bg-color);
+                box-shadow: var(--shadow);
+                padding: 1rem;
+            }
+            
+            .header-actions.active {
+                display: flex;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .listings-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chat-container {
+                flex-direction: column;
+                height: 500px;
+            }
+            
+            .chat-list {
+                width: 100%;
+                height: 200px;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+        }
+
+        /* Animation Classes */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 53%, 80%, 100% {
+                transform: translate3d(0,0,0);
+            }
+            40%, 43% {
+                transform: translate3d(0,-10px,0);
+            }
+            70% {
+                transform: translate3d(0,-5px,0);
+            }
+            90% {
+                transform: translate3d(0,-2px,0);
+            }
+        }
+
+        .bounce {
+            animation: bounce 1s;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+            z-index: 1001;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Hidden class for toggling */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo" onclick="showPage('home')">ElanPortal.az</a>
+                
+                <div class="search-bar">
+                    <input type="text" placeholder="Məhsul, kateqoriya və ya açar söz axtar...">
+                    <button class="search-btn">Axtar</button>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+                    <a href="#" class="login-btn" onclick="showPage('login')">Giriş</a>
+                    <a href="#" class="add-listing-btn" onclick="showPage('add-listing')">Elan Yerləşdir</a>
+                </div>
+                
+                <!-- Mobile Hamburger Menu -->
+                <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content - Dynamic Pages -->
+    <main class="main-content">
+        <!-- Home Page -->
+        <div id="home-page" class="page active">
+            <div class="container">
+                <section class="categories-section">
+                    <h2>Kateqoriyalar</h2>
+                    <div class="categories-grid" id="categoriesGrid">
+                        <!-- Categories will be loaded dynamically -->
+                    </div>
+                </section>
+
+                <section class="recent-listings">
+                    <h2>Son Elanlar</h2>
+                    <div class="listings-grid" id="recentListings">
+                        <!-- Recent listings will be loaded dynamically -->
+                    </div>
+                </section>
+
+                <section class="recently-viewed">
+                    <h2>Son Baxdıqlarım</h2>
+                    <div class="listings-grid" id="viewedSlider">
+                        <!-- Recently viewed items will be loaded dynamically -->
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Categories Page -->
+        <div id="categories-page" class="page hidden">
+            <div class="container">
+                <div style="display: flex; gap: 2rem;">
+                    <!-- Filter Panel -->
+                    <div class="filter-panel" style="flex: 0 0 300px;">
+                        <div class="filter-group">
+                            <h3>Qiymət</h3>
+                            <input type="range" min="0" max="10000" value="5000" class="price-slider" id="priceRange">
+                            <div class="price-output" id="priceOutput">5000 AZN</div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <h3>Şəhər</h3>
+                            <div class="filter-options">
+                                <label><input type="checkbox" value="Bakı"> Bakı</label>
+                                <label><input type="checkbox" value="Gəncə"> Gəncə</label>
+                                <label><input type="checkbox" value="Sumqayıt"> Sumqayıt</label>
+                                <label><input type="checkbox" value="Mingəçevir"> Mingəçevir</label>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <h3>Kateqoriya</h3>
+                            <div class="filter-options">
+                                <label><input type="checkbox" value="electronics"> Elektronika</label>
+                                <label><input type="checkbox" value="vehicles"> Nəqliyyat</label>
+                                <label><input type="checkbox" value="property"> Əmlak</label>
+                                <label><input type="checkbox" value="fashion"> Geyim</label>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary" style="width: 100%;" onclick="applyFilters()">Filterlə</button>
+                    </div>
+                    
+                    <!-- Listings -->
+                    <div style="flex: 1;">
+                        <h2>Elanlar</h2>
+                        <div class="listings-grid" id="categoryListings">
+                            <!-- Category listings will be loaded dynamically -->
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <div class="pagination" id="pagination">
+                            <!-- Pagination will be generated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Listing Detail Page -->
+        <div id="listing-detail-page" class="page hidden">
+            <div class="container">
+                <button class="btn btn-secondary" onclick="showPage('categories')">← Geri</button>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+                    <!-- Image Slider -->
+                    <div>
+                        <div class="slider-container">
+                            <div class="slider" id="imageSlider">
+                                <div class="slide">Şəkil 1</div>
+                                <div class="slide">Şəkil 2</div>
+                                <div class="slide">Şəkil 3</div>
+                            </div>
+                            <button class="slider-btn prev-btn" onclick="prevSlide()">❮</button>
+                            <button class="slider-btn next-btn" onclick="nextSlide()">❯</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Listing Info -->
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                            <h1 id="listingTitle">Elan Başlığı</h1>
+                            <button class="favorite-btn" id="detailFavoriteBtn" onclick="toggleFavorite(this)">❤</button>
+                        </div>
+                        
+                        <div class="listing-price" id="listingPrice">1500 AZN</div>
+                        <div style="margin: 1.5rem 0;">
+                            <p id="listingDescription">Bu məhsulun təsviri burada olacaq. Məhsulun xüsusiyyətləri, vəziyyəti və digər məlumatlar bu bölmədə verilir.</p>
+                        </div>
+                        
+                        <div class="filter-panel">
+                            <h3>Satıcı Məlumatları</h3>
+                            <p><strong>Ad:</strong> <span id="sellerName">Əli Məmmədov</span></p>
+                            <p><strong>Əlaqə:</strong> <span id="sellerContact">+994 50 123 45 67</span></p>
+                            <p><strong>Ünvan:</strong> <span id="sellerLocation">Bakı, Nəsimi rayonu</span></p>
+                            <button class="btn btn-primary" style="margin-top: 1rem;">Satıcı ilə əlaqə</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Listing Page -->
+        <div id="add-listing-page" class="page hidden">
+            <div class="container">
+                <h2>Yeni Elan Yerləşdir</h2>
+                
+                <div class="form-container">
+                    <div class="form-step active" id="step1">
+                        <div class="form-group">
+                            <label for="category">Kateqoriya</label>
+                            <select id="category">
+                                <option value="">Kateqoriya seçin</option>
+                                <option value="electronics">Elektronika</option>
+                                <option value="vehicles">Nəqliyyat</option>
+                                <option value="property">Əmlak</option>
+                                <option value="fashion">Geyim</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="title">Elan Başlığı</label>
+                            <input type="text" id="title" placeholder="Məsələn: iPhone 13 Pro Max">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn btn-secondary" onclick="showPage('home')">Ləğv et</button>
+                            <button class="btn btn-primary" onclick="nextStep(2)">Növbəti</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-step" id="step2">
+                        <div class="form-group">
+                            <label for="description">Təsvir</label>
+                            <textarea id="description" placeholder="Məhsul haqqında ətraflı məlumat yazın..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="price">Qiymət (AZN)</label>
+                            <input type="number" id="price" placeholder="0">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="location">Yer</label>
+                            <input type="text" id="location" placeholder="Məsələn: Bakı, Nərimanov">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn btn-secondary" onclick="prevStep(1)">Əvvəlki</button>
+                            <button class="btn btn-primary" onclick="nextStep(3)">Növbəti</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-step" id="step3">
+                        <div class="form-group">
+                            <label>Şəkillər</label>
+                            <div class="image-upload" onclick="document.getElementById('imageUpload').click()">
+                                Şəkilləri bura sürükləyin və ya klikləyin
+                            </div>
+                            <input type="file" id="imageUpload" multiple style="display: none;" onchange="handleImageUpload(this.files)">
+                            <div class="image-preview" id="imagePreview"></div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn btn-secondary" onclick="prevStep(2)">Əvvəlki</button>
+                            <button class="btn btn-primary" onclick="submitListing()">Elanı Yerləşdir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div id="profile-page" class="page hidden">
+            <div class="container">
+                <h2>Profilim</h2>
+                
+                <div style="display: grid; grid-template-columns: 300px 1fr; gap: 2rem;">
+                    <!-- Profile Info -->
+                    <div class="filter-panel">
+                        <div style="text-align: center; margin-bottom: 1.5rem;">
+                            <div style="width: 100px; height: 100px; border-radius: 50%; background: #f0f0f0; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; color: var(--text-light);">
+                                Şəkil
+                            </div>
+                            <h3 id="profileName">İstifadəçi Adı</h3>
+                            <p id="profileEmail">user@example.com</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="profilePhone">Telefon</label>
+                            <input type="text" id="profilePhone" value="+994 50 123 45 67">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="profileLocation">Ünvan</label>
+                            <input type="text" id="profileLocation" value="Bakı, Azərbaycan">
+                        </div>
+                        
+                        <button class="btn btn-primary" style="width: 100%;" onclick="updateProfile()">Yadda saxla</button>
+                    </div>
+                    
+                    <!-- Profile Content -->
+                    <div>
+                        <div class="tabs">
+                            <div class="tab active" onclick="switchTab('my-listings')">Elanlarım</div>
+                            <div class="tab" onclick="switchTab('favorites')">Favoritlər</div>
+                        </div>
+                        
+                        <div class="tab-content active" id="my-listings">
+                            <div class="listings-grid" id="myListings">
+                                <!-- User's listings will be loaded dynamically -->
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content" id="favorites">
+                            <div class="listings-grid" id="favoriteListings">
+                                <!-- Favorite listings will be loaded dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Page -->
+        <div id="login-page" class="page hidden">
+            <div class="container">
+                <div class="form-container">
+                    <div class="tabs">
+                        <div class="tab active" onclick="switchAuthTab('login')">Giriş</div>
+                        <div class="tab" onclick="switchAuthTab('register')">Qeydiyyat</div>
+                    </div>
+                    
+                    <div class="tab-content active" id="login-form">
+                        <div class="form-group">
+                            <label for="loginEmail">E-poçt</label>
+                            <input type="email" id="loginEmail" placeholder="example@mail.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loginPassword">Şifrə</label>
+                            <input type="password" id="loginPassword" placeholder="Şifrənizi daxil edin">
+                        </div>
+                        
+                        <button class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;" onclick="login()">Daxil ol</button>
+                        
+                        <div style="text-align: center; margin: 1.5rem 0;">
+                            <p>Və ya</p>
+                        </div>
+                        
+                        <button class="btn btn-secondary" style="width: 100%; margin-bottom: 0.5rem;">Google ilə daxil ol</button>
+                        <button class="btn btn-secondary" style="width: 100%;">Facebook ilə daxil ol</button>
+                    </div>
+                    
+                    <div class="tab-content" id="register-form">
+                        <div class="form-group">
+                            <label for="registerName">Ad Soyad</label>
+                            <input type="text" id="registerName" placeholder="Adınızı və soyadınızı daxil edin">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="registerEmail">E-poçt</label>
+                            <input type="email" id="registerEmail" placeholder="example@mail.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="registerPassword">Şifrə</label>
+                            <input type="password" id="registerPassword" placeholder="Ən azı 6 simvol">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="registerConfirmPassword">Şifrəni təsdiqlə</label>
+                            <input type="password" id="registerConfirmPassword" placeholder="Şifrənizi təkrar daxil edin">
+                        </div>
+                        
+                        <button class="btn btn-primary" style="width: 100%;" onclick="register()">Qeydiyyatdan keç</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messages Page -->
+        <div id="messages-page" class="page hidden">
+            <div class="container">
+                <h2>Mesajlar</h2>
+                
+                <div class="chat-container">
+                    <div class="chat-list">
+                        <div class="chat-item active" onclick="openChat(1)">
+                            <strong>Əli Məmmədov</strong>
+                            <p>iPhone 13 haqqında soruşum var</p>
+                        </div>
+                        <div class="chat-item" onclick="openChat(2)">
+                            <strong>Aygün Həsənova</strong>
+                            <p>Mən avtomobili gördüm, razıyam</p>
+                        </div>
+                        <div class="chat-item" onclick="openChat(3)">
+                            <strong>Vüsal Əliyev</strong>
+                            <p>Mənzil haqqında ətraflı məlumat verə bilərsiniz?</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-window">
+                        <div class="chat-header">
+                            <strong id="chatUserName">Əli Məmmədov</strong>
+                        </div>
+                        
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="message received">
+                                Salam, iPhone 13 elanınızı gördüm. Məhsul orijinaldır?
+                            </div>
+                            <div class="message sent">
+                                Bəli, orijinaldır, hələ də zəmanət müddəti davam edir.
+                            </div>
+                            <div class="message received">
+                                Qiymətdə razılaşa bilərik? 1500 AZN verərdim.
+                            </div>
+                        </div>
+                        
+                        <div class="chat-input">
+                            <input type="text" id="messageInput" placeholder="Mesajınızı yazın...">
+                            <button class="btn btn-primary" onclick="sendMessage()">Göndər</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Əlaqə</h3>
+                    <p>Email: info@elanportal.az</p>
+                    <p>Telefon: +994 12 345 67 89</p>
+                    <p>Ünvan: Bakı, Azərbaycan</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Sosial Media</h3>
+                    <div class="social-icons">
+                        <a href="#">Facebook</a>
+                        <a href="#">Instagram</a>
+                        <a href="#">LinkedIn</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Qaydalar</h3>
+                    <a href="#">İstifadəçi Qaydaları</a>
+                    <a href="#">Məxfilik Siyasəti</a>
+                    <a href="#">Cookie Siyasəti</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mock data for the application
+        const mockData = {
+            categories: [
+                { id: 1, name: "Elektronika", icon: "📱" },
+                { id: 2, name: "Nəqliyyat", icon: "🚗" },
+                { id: 3, name: "Əmlak", icon: "🏠" },
+                { id: 4, name: "Geyim", icon: "👕" },
+                { id: 5, name: "Ev & Bağ", icon: "🛋️" },
+                { id: 6, name: "İdman", icon: "⚽" },
+                { id: 7, name: "Hobbi", icon: "🎨" },
+                { id: 8, name: "Heyvanlar", icon: "🐕" }
+            ],
+            listings: [
+                { 
+                    id: 1, 
+                    title: "iPhone 13 Pro Max", 
+                    price: 1500, 
+                    location: "Bakı", 
+                    category: "electronics",
+                    description: "Yeni vətəgə gətirilmiş iPhone 13 Pro Max. Zəmanət möhürü var. Bütün aksesuarları ilə birlikdə.",
+                    seller: { name: "Əli Məmmədov", phone: "+994 50 123 45 67", location: "Bakı, Nəsimi rayonu" }
+                },
+                { 
+                    id: 2, 
+                    title: "Toyota Camry 2018", 
+                    price: 25000, 
+                    location: "Sumqayıt", 
+                    category: "vehicles",
+                    description: "Toyota Camry 2018, 2.5L, full komplektasiya. Rəngi ağ, daxili salon parça. Yeni şinlər.",
+                    seller: { name: "Aygün Həsənova", phone: "+994 55 678 90 12", location: "Sumqayıt" }
+                },
+                { 
+                    id: 3, 
+                    title: "2 otaqlı mənzil", 
+                    price: 120000, 
+                    location: "Bakı", 
+                    category: "property",
+                    description: "Nərimanov rayonunda yerləşən 2 otaqlı yeni təmirli mənzil. Mərkəzi istilik, lift var.",
+                    seller: { name: "Vüsal Əliyev", phone: "+994 70 345 67 89", location: "Bakı, Nərimanov" }
+                },
+                { 
+                    id: 4, 
+                    title: "Nike Air Jordan", 
+                    price: 250, 
+                    location: "Gəncə", 
+                    category: "fashion",
+                    description: "Orijinal Nike Air Jordan ayaqqabıları. Ölçü 42, rəngi qara-qırmızı. Zəmanət möhürü var.",
+                    seller: { name: "Rəşad İsmayılov", phone: "+994 51 234 56 78", location: "Gəncə" }
+                }
+            ]
+        };
+
+        // Main Application Class
+        class ElanPortalApp {
+            constructor() {
+                this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+                this.favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+                this.currentPage = 'home';
+                this.currentStep = 1;
+                this.currentSlide = 0;
+                this.currentChat = 1;
+                
+                this.init();
+            }
+
+            init() {
+                this.loadCategories();
+                this.loadListings();
+                this.setupEventListeners();
+                this.loadTheme();
+                this.updateUI();
+            }
+
+            setupEventListeners() {
+                // Search functionality
+                const searchInput = document.querySelector('.search-bar input');
+                const searchBtn = document.querySelector('.search-btn');
+                
+                searchBtn.addEventListener('click', () => this.handleSearch(searchInput.value));
+                searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.handleSearch(searchInput.value);
+                });
+
+                // Price slider
+                const priceSlider = document.getElementById('priceRange');
+                if (priceSlider) {
+                    priceSlider.addEventListener('input', (e) => {
+                        document.getElementById('priceOutput').textContent = `${e.target.value} AZN`;
+                    });
+                }
+            }
+
+            loadTheme() {
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+
+            toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            }
+
+            loadCategories() {
+                const categoriesGrid = document.getElementById('categoriesGrid');
+                if (!categoriesGrid) return;
+                
+                categoriesGrid.innerHTML = mockData.categories.map(category => `
+                    <a href="#" class="category-card" onclick="app.showPage('categories')">
+                        <div class="category-icon">${category.icon}</div>
+                        <h3>${category.name}</h3>
+                    </a>
+                `).join('');
+            }
+
+            loadListings() {
+                this.loadRecentListings();
+                this.loadCategoryListings();
+                this.loadMyListings();
+                this.loadFavoriteListings();
+                this.loadRecentlyViewed();
+            }
+
+            loadRecentListings() {
+                const recentListings = document.getElementById('recentListings');
+                if (!recentListings) return;
+                
+                recentListings.innerHTML = mockData.listings.map(listing => this.createListingCard(listing)).join('');
+            }
+
+            loadCategoryListings() {
+                const categoryListings = document.getElementById('categoryListings');
+                if (!categoryListings) return;
+                
+                categoryListings.innerHTML = mockData.listings.map(listing => this.createListingCard(listing)).join('');
+                
+                // Generate pagination
+                this.generatePagination();
+            }
+
+            loadMyListings() {
+                const myListings = document.getElementById('myListings');
+                if (!myListings) return;
+                
+                // For demo, show all listings as user's listings
+                myListings.innerHTML = mockData.listings.map(listing => `
+                    ${this.createListingCard(listing)}
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                        <button class="btn btn-secondary" style="flex: 1;">Redaktə et</button>
+                        <button class="btn btn-secondary" style="flex: 1;">Sil</button>
+                    </div>
+                `).join('');
+            }
+
+            loadFavoriteListings() {
+                const favoriteListings = document.getElementById('favoriteListings');
+                if (!favoriteListings) return;
+                
+                // Filter listings to show only favorites
+                const favoriteIds = this.favorites;
+                const favoriteItems = mockData.listings.filter(listing => favoriteIds.includes(listing.id));
+                
+                favoriteListings.innerHTML = favoriteItems.map(listing => this.createListingCard(listing)).join('');
+            }
+
+            loadRecentlyViewed() {
+                const viewedSlider = document.getElementById('viewedSlider');
+                if (!viewedSlider) return;
+                
+                // For demo, show first two listings as recently viewed
+                viewedSlider.innerHTML = mockData.listings.slice(0, 2).map(listing => this.createListingCard(listing)).join('');
+            }
+
+            createListingCard(listing) {
+                const isFavorite = this.favorites.includes(listing.id);
+                return `
+                    <div class="listing-card">
+                        <div class="listing-image">${listing.title} şəkli</div>
+                        <div class="listing-info">
+                            <div class="listing-header">
+                                <div class="listing-price">${listing.price} AZN</div>
+                                <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="app.toggleFavorite(${listing.id}, this)">❤</button>
+                            </div>
+                            <div class="listing-title">${listing.title}</div>
+                            <div class="listing-location">${listing.location}</div>
+                            <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="app.showListingDetail(${listing.id})">Ətraflı</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            generatePagination() {
+                const pagination = document.getElementById('pagination');
+                if (!pagination) return;
+                
+                pagination.innerHTML = `
+                    <button class="active">1</button>
+                    <button>2</button>
+                    <button>3</button>
+                    <button>...</button>
+                    <button>10</button>
+                `;
+            }
+
+            showPage(pageName) {
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.add('hidden');
+                });
+                
+                // Show selected page
+                document.getElementById(`${pageName}-page`).classList.remove('hidden');
+                
+                this.currentPage = pageName;
+                
+                // Update UI based on page and user state
+                this.updateUI();
+            }
+
+            updateUI() {
+                // Update header based on login state
+                const loginBtn = document.querySelector('.login-btn');
+                const headerActions = document.querySelector('.header-actions');
+                
+                if (this.currentUser) {
+                    loginBtn.textContent = 'Profil';
+                    loginBtn.onclick = () => this.showPage('profile');
+                    
+                    // Add messages link if user is logged in
+                    if (!document.querySelector('.messages-btn')) {
+                        const messagesBtn = document.createElement('a');
+                        messagesBtn.href = '#';
+                        messagesBtn.className = 'login-btn messages-btn';
+                        messagesBtn.textContent = 'Mesajlar';
+                        messagesBtn.onclick = () => this.showPage('messages');
+                        headerActions.insertBefore(messagesBtn, document.querySelector('.add-listing-btn'));
+                    }
+                } else {
+                    loginBtn.textContent = 'Giriş';
+                    loginBtn.onclick = () => this.showPage('login');
+                    
+                    // Remove messages link if exists
+                    const messagesBtn = document.querySelector('.messages-btn');
+                    if (messagesBtn) messagesBtn.remove();
+                }
+                
+                // Update profile page if user is logged in
+                if (this.currentUser && document.getElementById('profileName')) {
+                    document.getElementById('profileName').textContent = this.currentUser.name;
+                    document.getElementById('profileEmail').textContent = this.currentUser.email;
+                }
+            }
+
+            toggleFavorite(listingId, button) {
+                if (this.favorites.includes(listingId)) {
+                    this.favorites = this.favorites.filter(id => id !== listingId);
+                    button.classList.remove('active');
+                } else {
+                    this.favorites.push(listingId);
+                    button.classList.add('active');
+                }
+                
+                localStorage.setItem('favorites', JSON.stringify(this.favorites));
+                
+                // Add bounce animation
+                button.classList.add('bounce');
+                setTimeout(() => button.classList.remove('bounce'), 1000);
+                
+                // Update favorite listings if on profile page
+                if (this.currentPage === 'profile') {
+                    this.loadFavoriteListings();
+                }
+            }
+
+            showListingDetail(listingId) {
+                const listing = mockData.listings.find(l => l.id === listingId);
+                if (!listing) return;
+                
+                // Update listing detail page
+                document.getElementById('listingTitle').textContent = listing.title;
+                document.getElementById('listingPrice').textContent = `${listing.price} AZN`;
+                document.getElementById('listingDescription').textContent = listing.description;
+                document.getElementById('sellerName').textContent = listing.seller.name;
+                document.getElementById('sellerContact').textContent = listing.seller.phone;
+                document.getElementById('sellerLocation').textContent = listing.seller.location;
+                
+                // Update favorite button
+                const favoriteBtn = document.getElementById('detailFavoriteBtn');
+                favoriteBtn.classList.toggle('active', this.favorites.includes(listingId));
+                favoriteBtn.onclick = () => this.toggleFavorite(listingId, favoriteBtn);
+                
+                // Reset slider
+                this.currentSlide = 0;
+                this.updateSlider();
+                
+                // Show listing detail page
+                this.showPage('listing-detail');
+                
+                // Add to recently viewed
+                this.addToRecentlyViewed(listingId);
+            }
+
+            addToRecentlyViewed(listingId) {
+                let recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
+                recentlyViewed = recentlyViewed.filter(id => id !== listingId);
+                recentlyViewed.unshift(listingId);
+                recentlyViewed = recentlyViewed.slice(0, 5); // Keep only last 5
+                localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
+            }
+
+            nextStep(step) {
+                document.getElementById(`step${this.currentStep}`).classList.remove('active');
+                document.getElementById(`step${step}`).classList.add('active');
+                this.currentStep = step;
+            }
+
+            prevStep(step) {
+                document.getElementById(`step${this.currentStep}`).classList.remove('active');
+                document.getElementById(`step${step}`).classList.add('active');
+                this.currentStep = step;
+            }
+
+            submitListing() {
+                // Get form data
+                const category = document.getElementById('category').value;
+                const title = document.getElementById('title').value;
+                const description = document.getElementById('description').value;
+                const price = document.getElementById('price').value;
+                const location = document.getElementById('location').value;
+                
+                // Simple validation
+                if (!category || !title || !description || !price || !location) {
+                    this.showNotification('Zəhmət olmasa bütün sahələri doldurun', 'error');
+                    return;
+                }
+                
+                // In a real app, you would send this data to a server
+                console.log('New listing:', { category, title, description, price, location });
+                
+                this.showNotification('Elanınız uğurla yerləşdirildi!');
+                
+                // Reset form and go to home page
+                document.querySelectorAll('#add-listing-page input, #add-listing-page textarea, #add-listing-page select').forEach(el => {
+                    el.value = '';
+                });
+                document.getElementById('imagePreview').innerHTML = '';
+                this.currentStep = 1;
+                document.querySelectorAll('.form-step').forEach(step => step.classList.remove('active'));
+                document.getElementById('step1').classList.add('active');
+                
+                this.showPage('home');
+            }
+
+            handleSearch(query) {
+                if (!query.trim()) return;
+                
+                // In a real app, you would redirect to search results page
+                console.log('Search query:', query);
+                this.showNotification(`"${query}" üçün axtarış nəticələri göstəriləcək`);
+                
+                // For demo, just show categories page
+                this.showPage('categories');
+            }
+
+            applyFilters() {
+                // Get filter values
+                const price = document.getElementById('priceRange').value;
+                const cities = Array.from(document.querySelectorAll('input[value="Bakı"], input[value="Gəncə"], input[value="Sumqayıt"], input[value="Mingəçevir"]'))
+                    .filter(checkbox => checkbox.checked)
+                    .map(checkbox => checkbox.value);
+                const categories = Array.from(document.querySelectorAll('input[value="electronics"], input[value="vehicles"], input[value="property"], input[value="fashion"]'))
+                    .filter(checkbox => checkbox.checked)
+                    .map(checkbox => checkbox.value);
+                
+                console.log('Applied filters:', { price, cities, categories });
+                this.showNotification('Filterlər tətbiq edildi');
+            }
+
+            updateProfile() {
+                const name = document.getElementById('profileName').textContent;
+                const email = document.getElementById('profileEmail').textContent;
+                const phone = document.getElementById('profilePhone').value;
+                const location = document.getElementById('profileLocation').value;
+                
+                // In a real app, you would send this to a server
+                console.log('Updated profile:', { name, email, phone, location });
+                this.showNotification('Profil məlumatları yeniləndi');
+            }
+
+            login() {
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                if (!email || !password) {
+                    this.showNotification('Zəhmət olmasa bütün sahələri doldurun', 'error');
+                    return;
+                }
+                
+                // In a real app, you would authenticate with a server
+                this.currentUser = {
+                    name: 'İstifadəçi Adı',
+                    email: email
+                };
+                
+                localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+                this.showNotification('Uğurla daxil oldunuz!');
+                this.showPage('home');
+            }
+
+            register() {
+                const name = document.getElementById('registerName').value;
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                const confirmPassword = document.getElementById('registerConfirmPassword').value;
+                
+                if (!name || !email || !password || !confirmPassword) {
+                    this.showNotification('Zəhmət olmasa bütün sahələri doldurun', 'error');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    this.showNotification('Şifrələr uyğun gəlmir', 'error');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    this.showNotification('Şifrə ən azı 6 simvol olmalıdır', 'error');
+                    return;
+                }
+                
+                // In a real app, you would register with a server
+                this.currentUser = { name, email };
+                localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+                this.showNotification('Qeydiyyat uğurla tamamlandı!');
+                this.showPage('home');
+            }
+
+            logout() {
+                this.currentUser = null;
+                localStorage.removeItem('currentUser');
+                this.showNotification('Hesabdan çıxış edildi');
+                this.showPage('home');
+            }
+
+            nextSlide() {
+                this.currentSlide = (this.currentSlide + 1) % 3; // 3 slides total
+                this.updateSlider();
+            }
+
+            prevSlide() {
+                this.currentSlide = (this.currentSlide - 1 + 3) % 3; // 3 slides total
+                this.updateSlider();
+            }
+
+            updateSlider() {
+                const slider = document.getElementById('imageSlider');
+                if (slider) {
+                    slider.style.transform = `translateX(-${this.currentSlide * 100}%)`;
+                }
+            }
+
+            openChat(chatId) {
+                this.currentChat = chatId;
+                
+                // Update active chat item
+                document.querySelectorAll('.chat-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                document.querySelectorAll('.chat-item')[chatId - 1].classList.add('active');
+                
+                // Update chat header
+                const userNames = ['Əli Məmmədov', 'Aygün Həsənova', 'Vüsal Əliyev'];
+                document.getElementById('chatUserName').textContent = userNames[chatId - 1];
+                
+                // Update chat messages (in a real app, this would come from a server)
+                const chatMessages = document.getElementById('chatMessages');
+                if (chatId === 1) {
+                    chatMessages.innerHTML = `
+                        <div class="message received">
+                            Salam, iPhone 13 elanınızı gördüm. Məhsul orijinaldır?
+                        </div>
+                        <div class="message sent">
+                            Bəli, orijinaldır, hələ də zəmanət müddəti davam edir.
+                        </div>
+                        <div class="message received">
+                            Qiymətdə razılaşa bilərik? 1500 AZN verərdim.
+                        </div>
+                    `;
+                } else if (chatId === 2) {
+                    chatMessages.innerHTML = `
+                        <div class="message received">
+                            Toyota Camry avtomobiliniz hələ satılıb?
+                        </div>
+                        <div class="message sent">
+                            Xeyr, hələ satılmayıb. Görmək istəyirsiniz?
+                        </div>
+                        <div class="message received">
+                            Bəli, mən avtomobili gördüm, razıyam. Görüşə bilərik?
+                        </div>
+                    `;
+                } else {
+                    chatMessages.innerHTML = `
+                        <div class="message received">
+                            Mənzil haqqında ətraflı məlumat verə bilərsiniz?
+                        </div>
+                        <div class="message sent">
+                            Əlbəttə, mənzil 65 m², 2 otaqlı, yeni təmirli, mərkəzi istilik və lift var.
+                        </div>
+                    `;
+                }
+            }
+
+            sendMessage() {
+                const input = document.getElementById('messageInput');
+                const message = input.value.trim();
+                
+                if (!message) return;
+                
+                const chatMessages = document.getElementById('chatMessages');
+                chatMessages.innerHTML += `<div class="message sent">${message}</div>`;
+                
+                input.value = '';
+                
+                // Auto-scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Simulate reply after a delay
+                setTimeout(() => {
+                    const replies = [
+                        "Qiymətdə endirim edə bilərsiniz?",
+                        "Görüş təyin edə bilərik?",
+                        "Əlavə şəkillər var?"
+                    ];
+                    const randomReply = replies[Math.floor(Math.random() * replies.length)];
+                    chatMessages.innerHTML += `<div class="message received">${randomReply}</div>`;
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+            }
+
+            handleImageUpload(files) {
+                const preview = document.getElementById('imagePreview');
+                
+                Array.from(files).forEach(file => {
+                    if (!file.type.match('image.*')) return;
+                    
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const div = document.createElement('div');
+                        div.className = 'preview-image';
+                        div.innerHTML = `
+                            <img src="${e.target.result}" alt="Preview">
+                            <button class="remove-image" onclick="this.parentElement.remove()">×</button>
+                        `;
+                        preview.appendChild(div);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            showNotification(message, type = 'success') {
+                // Remove existing notification
+                const existingNotification = document.querySelector('.notification');
+                if (existingNotification) existingNotification.remove();
+                
+                // Create new notification
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+        }
+
+        // Global functions for HTML onclick handlers
+        function toggleTheme() {
+            app.toggleTheme();
+        }
+
+        function showPage(pageName) {
+            app.showPage(pageName);
+        }
+
+        function toggleMobileMenu() {
+            document.querySelector('.header-actions').classList.toggle('active');
+            document.querySelector('.mobile-menu-toggle').classList.toggle('active');
+        }
+
+        function nextStep(step) {
+            app.nextStep(step);
+        }
+
+        function prevStep(step) {
+            app.prevStep(step);
+        }
+
+        function submitListing() {
+            app.submitListing();
+        }
+
+        function applyFilters() {
+            app.applyFilters();
+        }
+
+        function updateProfile() {
+            app.updateProfile();
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function switchAuthTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`${tabName}-form`).classList.add('active');
+        }
+
+        function login() {
+            app.login();
+        }
+
+        function register() {
+            app.register();
+        }
+
+        function openChat(chatId) {
+            app.openChat(chatId);
+        }
+
+        function sendMessage() {
+            app.sendMessage();
+        }
+
+        function nextSlide() {
+            app.nextSlide();
+        }
+
+        function prevSlide() {
+            app.prevSlide();
+        }
+
+        function handleImageUpload(files) {
+            app.handleImageUpload(files);
+        }
+
+        // Initialize the application
+        let app;
+        document.addEventListener('DOMContentLoaded', () => {
+            app = new ElanPortalApp();
+        });
+    </script>
+</body>
+</html>
